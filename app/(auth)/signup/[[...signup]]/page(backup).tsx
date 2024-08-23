@@ -12,79 +12,56 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  SelectValue,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  Select,
-} from "@/components/ui/select";
-import axios from "axios";
 import Link from "next/link";
-import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import axios from "axios"
+import { useEffect, useState } from "react";
+import {toast} from "react-hot-toast"
 
-const domain = process.env.DOMAIN;
-
+var disableButton = false
+const domain=process.env.DOMAIN
 const formSchema = z
   .object({
-    firstName: z.string(),
-    lastName: z.string(),
-    email: z.string().email(),
-    username: z.string(),
-    password: z.string().min(3),
+    firstName: z.string().max(50),
+    lastName: z.string().max(50),
+    emailAddress: z.string().email(),
+    username: z.string().toLowerCase(),
+    password: z.string().min(8).max(12),
     passwordConfirm: z.string(),
   })
-  .refine(
-    (data) => {
-      return data.password === data.passwordConfirm;
-    },
-    {
-      message: "Passwords do not match",
-      path: ["passwordConfirm"],
-    }
-  );
+  .refine((data) => {
+    if (data.password === data.passwordConfirm) return false;
+  });
 
-export default function Home() {
-  const router = useRouter();
+const page = () => {
+  const router = useRouter()
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
-      email: "",
+      emailAddress: "",
       username: "",
       password: "",
       passwordConfirm: "",
     },
   });
-
-  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    const formData = values;
-    // console.log(formData);
-    try {
-        const response = await axios.post(
-          `http://localhost:3000/api/signup`,
-          formData
-        );
-      if (response.status == 200) {
-        toast.success("Success");
-        setTimeout(() => {
-          router.push("/login");
-        }, 1500);
-      }
-    } catch (error: any) {
-        console.log(error)
-    }
+  const handleFormSubmit=async() => {
+    const formData=form.getValues()
+    const response = await axios.post(`${domain}/api/signup/`, formData)
   };
-
+  // useEffect(() => {
+  //   console.log(form.getValues())
+  // },[])
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(handleSubmit)}
+          onSubmit={form.handleSubmit(handleFormSubmit)}
           className="max-w-sm py-10 px-3 rounded-lg drop-shadow-2xl bg-white bg-cover bg-center w-full flex flex-col gap-3"
         >
+          <p className="m-auto">Logo</p>
           <div className="flex gap-2">
             <FormField
               control={form.control}
@@ -119,17 +96,13 @@ export default function Home() {
           </div>
           <FormField
             control={form.control}
-            name="email"
+            name="emailAddress"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Email address</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Email address"
-                      type="email"
-                      {...field}
-                    />
+                    <Input placeholder="Email" type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,13 +117,27 @@ export default function Home() {
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="Username" type="text" {...field} />
+                    <Input placeholder="UserName" type="text" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               );
             }}
           />
+          {/* <FormField
+            control={form.control}
+            name="image"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel>Profile Photo</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Photo" type="text" {...field} />
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          /> */}
           <FormField
             control={form.control}
             name="password"
@@ -172,10 +159,9 @@ export default function Home() {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel>Password confirm</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Password confirm"
+                      placeholder="Confirm Password"
                       type="password"
                       {...field}
                     />
@@ -185,15 +171,14 @@ export default function Home() {
               );
             }}
           />
-          <Button type="submit" className="w-full">
-            Submit
-          </Button>
-          <Link className="text-slate-800" href={`/login`}>
-            Already have an account? Login.
-          </Link>
+          <span>captcha</span>
+          <button type="submit">Submit</button>
+
+          
         </form>
       </Form>
-      <Toaster />
     </main>
   );
-}
+};
+
+export default page;

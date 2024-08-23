@@ -19,6 +19,8 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { logo } from "@/public/assets";
+import Image from "next/image";
 
 const MenuIcon = (props: any) => {
   return (
@@ -43,27 +45,16 @@ const MenuIcon = (props: any) => {
 
 const MountainIcon = (props: any) => {
   return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
-    </svg>
+    <div className="w-20">
+      <Image src={logo} alt="Xplits"/>
+    </div>
   );
 };
 
 const Navbar = () => {
   const pathname = usePathname();
   return (
-      <header className="flex h-20 w-full bg-main bg-cover bg-center shrink-0 items-center px-4 md:px-6">
+      <header className="flex h-20 w-full bg-green bg-cover bg-no-repeat shadow-slate-400 shadow-sm shrink-0 items-center px-4 md:px-6">
       <Sheet>
         <SheetTrigger asChild>
           <Button className="lg:hidden" size="icon" variant="outline">

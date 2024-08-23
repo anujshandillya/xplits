@@ -1,22 +1,23 @@
-import Connection from "@/db/dbConfig";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
+import Connection from "@/db/index"
 
-Connection();
+
 
 export const POST = async (req: NextRequest) => {
   try {
+    await Connection()
     const reqBody = await req.json();
-    console.log(reqBody);
-    const { firstName, lastName, username, emailAddress, password } = reqBody;
-    const user = await User.findOne({ emailAddress });
+    // console.log(reqBody);
+    const { firstName, lastName, username, email, password } = reqBody;
+    const user = await User.findOne({ email });
     if (user) {
       return NextResponse.json(
         {
           error: "User already exists",
         },
-        { status: 400 }
+        { status: 300 }
       );
     }
 
@@ -27,7 +28,7 @@ export const POST = async (req: NextRequest) => {
       username,
       firstName,
       lastName,
-      emailAddress,
+      email,
       password: hashPass,
     });
 

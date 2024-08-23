@@ -1,0 +1,28 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    ports:
+      - 3000:3000
+    
+    develop:
+      watch:
+      - path: ./package.json
+        action: rebuild
+      - path: ./next.config.mjs
+        action: rebuild
+      - path: ./package-lock.json
+        action: rebuild
+      - path: .
+        target: /app
+        action: sync
+
+    environment:
+      - MONGO_URI=mongodb+srv://anujsharmawork11:qwerty1234@gotodo.kdno0jb.mongodb.net/?retryWrites=true&w=majority&appName=gotodo
+      - SECRET=fojtWT$Wtqtmgw4itaetgpag4w%qteja0tqa9t
+      - DOMAIN=http:localhost:3000
+
+volumes:
+  tasked:

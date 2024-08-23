@@ -57,6 +57,7 @@ const config = {
       backgroundImage: {
         'main': "url('/assets/images/main.jpeg')",
         'log': "url('/assets/images/log.avif')",
+        'green': "url('/assets/images/green.webp')",
         // 'hero-img': "url('/assets/images/hero.png')",
       },
       borderRadius: {

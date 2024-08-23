@@ -5,6 +5,7 @@ const UserSchema = new Schema({
   username: { type: String, required: true, unique: true },
   firstName: { type: String, required: true, max: 20 },
   lastName: { type: String, required: true, max: 30 },
+  picture: {},
   password: { type: String, required: true, min: 8, max: 12 }, 
   isVerified: { type: Boolean, default: false },
   forgotPasswordToken: String,
