@@ -23,6 +23,8 @@ import axios from "axios";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { logo } from "@/public/assets";
 
 const domain = process.env.DOMAIN;
 
@@ -79,7 +81,8 @@ export default function Home() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex max-h-screen flex-col items-center justify-between p-8">
+      <Image width={70} src={logo} alt="Xplits"/>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}

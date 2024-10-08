@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { logo } from "@/public/assets";
 
 const formSchema = z.object({
   emailAddress: z.string().email(),
@@ -28,13 +30,13 @@ const page = () => {
   });
   const handleSubmit = () => {};
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex max-h-screen flex-col items-center justify-between p-8">
+      <Image width={70} src={logo} alt="Xplits"/>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
-          className="max-w-sm py-10 px-3 rounded-lg drop-shadow-2xl bg-white bg-cover bg-center w-full flex flex-col gap-6"
+          className="max-w-sm py-10 px-3 rounded-lg drop-shadow-2xl bg-white bg-cover bg-center w-full flex flex-col gap-3"
         >
-          <p className="m-auto">Logo</p>
           <FormField
             control={form.control}
             name="emailAddress"
